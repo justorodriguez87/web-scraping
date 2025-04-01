@@ -1,7 +1,5 @@
 # web-scraping
 
-# web-scraping
-
 # Scraping de Administradores de findas Colegiados de Tenerife
 
 Este proyecto realiza un web scraping sobre la página web de la CAF Tenerife para obtener información sobre los colegiados registrados. La información extraída incluye el nombre, apellidos, localidad, estado, enlace al perfil, correo electrónico y teléfono de cada colegiado.
