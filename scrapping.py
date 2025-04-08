@@ -23,13 +23,13 @@ def scrape_page(url):
     if response.status_code != 200:
         print(f"Error al obtener la página {url}: {response.status_code}")
         return None
-    
+
     soup = BeautifulSoup(response.text, "html.parser")
     tabla = soup.find("table")
     if not tabla:
         print("No se encontró la tabla en la página.")
         return None
-    
+
     # Se ignora la cabecera de la tabla
     filas = tabla.find_all("tr")[1:]
     for fila in filas:
@@ -69,14 +69,14 @@ def get_total_pages():
     if not paginacion:
         return 1  
     paginas = paginacion.find_all("a", class_="page-numbers")
-    total_paginas = 1
+    max_page = 1
     for pagina in paginas:
-        try:
-            num_pagina = int(pagina.text.strip())
-            total_paginas = max(total_paginas, num_pagina)
-        except ValueError:
-            continue  
-    return total_paginas
+        texto = pagina.text.strip()
+        if texto.isdigit():
+            num = int(texto)
+            if num > max_page:
+                max_page = num
+    return max_page
 
 # --- PROCESO DE SCRAPING ---
 
@@ -87,7 +87,8 @@ print(f"Total de páginas: {total_pages}")
 # Recorrer todas las páginas y extraer los datos básicos de los colegiados
 for page in range(1, total_pages + 1):
     print(f"Scrapeando página {page}...")
-    scrape_page(f"{base_url}?page={page}")
+    # Se utiliza el parámetro "listpage" 
+    scrape_page(f"{base_url}?listpage={page}")
 
 # Recorrer cada perfil y extraer el email y teléfono desde cada perfil
 for colegiado in colegiados:
